@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>PUPPA</title>
+</head>
+<body>
+{% if lista %}
+    <ul>
+    {% for elem in lista %}
+        <li><a href="/dato/{{ elem }}/">Elemento {{ elem }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Non ci sono dati disponibili.</p>
+{% endif %}
+{% if dato %}
+	<h1>HAI SELEZIONATO L'ELEMENTO {{ dato }}</h1>
+{% endif %}
+</body>
+</html>
