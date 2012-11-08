@@ -20,6 +20,7 @@ class Operatore(models.Model):
     nome = models.CharField( max_length = 100)
     utente = models.ForeignKey('auth.User', related_name='+') 
     
+    
     def __unicode__(self):
         return self.nome
     
