@@ -55,8 +55,7 @@ def rnd():
 
 
 class SchedaRitiro(models.Model):
-    progressivo = models.IntegerField(default = rnd)
-    #progressivo = models.AutoField(primary_key=False)
+    progressivo = models.IntegerField(default = 0)
     data_ritiro = models.DateTimeField(default = datetime.now)
     apparecchio = models.ForeignKey('Apparecchio', related_name='+') 
     seriale = models.CharField(max_length=100, blank=True,null=True)
@@ -69,7 +68,7 @@ class SchedaRitiro(models.Model):
     acquisizione_garanzia = models.BooleanField()
     note = models.TextField(blank=True,null=True)
     ritirato_da = models.ForeignKey('Operatore', related_name='+') 
-    preventivo_ok = models.BooleanField ()
+    preventivo_ok = models.BooleanField (verbose_name='Preventivo richiesto')
     importo_preventivo = models.FloatField(blank=True,null=True)
     acconto = models.FloatField(blank=True,null=True)
     scontrino_acconto = models.CharField(max_length = 50, blank=True,null=True)
@@ -78,11 +77,15 @@ class SchedaRitiro(models.Model):
     difetto_riscontrato = models.TextField(blank=True,null=True)
     costo_riparazione = models.FloatField(blank=True,null=True)
     
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            #This code only happens if the objects is
+            #not in the database yet. Otherwise it would
+            #have pk
+            self.progressivo=rnd()
+        super(SchedaRitiro, self).save(*args, **kwargs)
+    
     def __unicode__(self):
         return '%s - %s' % (self.progressivo,self.data_ritiro)
-    
-    def save(self, force_insert=False, force_update=False, using=None):
-        print 'save'
-        super(SchedaRitiro,self).save(force_insert, force_update, using)
     
     

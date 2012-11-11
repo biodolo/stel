@@ -9,7 +9,8 @@
 		};
 	var form_id='schedaritiro_form';
 
-
+	var fieldset_garanzia = false;
+	var fieldset_fuori_garanzia = false;
 
 	function isEmpty(id){
 		return $("#"+id).val()=='';
@@ -67,6 +68,9 @@
 
 	$(document).ready(
 		function() {
+			if ($('#'+form_id).length==0) {
+				return false;
+			}
 			var functionBackup = new Array();
 			functionBackup['dismissRelatedLookupPopup'] = dismissRelatedLookupPopup;
 			dismissRelatedLookupPopup = function(win, val) {
@@ -80,12 +84,10 @@
 			for (i = 0; i < key_field.length; i++) {
 				setupRelated(key_field[i]);
 			}
+			if (setup_form)
+				setup_form();
 			if (submit_check)
 				$('#'+form_id).submit(submit_check);
-			if ($('#id_riconsegnato_da').val()!=''){
-				form_readonly=true;
-			}
-
 		});
 	
 	function submit_check(){
@@ -133,5 +135,25 @@
 			return false;
 		}
 		return true;
+	}
+	
+	function garanzia_toggle(){
+		if(isChecked('id_garanzia')){
+			fieldset_garanzia.show();
+			fieldset_fuori_garanzia.hide();
+		}else{
+			fieldset_garanzia.hide();
+			fieldset_fuori_garanzia.show();
+		}
+	}
+	
+	function setup_form(){
+		if ($('#id_riconsegnato_da').val()!=''){
+			form_readonly=true;
+		}
+		fieldset_garanzia = $('#id_data_acquisto').closest('fieldset');
+		fieldset_fuori_garanzia = $('#id_acconto').closest('fieldset');
+		$('#id_garanzia').click(garanzia_toggle);
+		garanzia_toggle();
 	}
 })(django.jQuery);

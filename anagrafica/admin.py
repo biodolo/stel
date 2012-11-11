@@ -34,6 +34,23 @@ class SchedaRitiroAdmin(admin.ModelAdmin):
     list_filter = ('ritirato_da__nome','apparecchio__tipo','apparecchio__marca','apparecchio__modello','apparecchio',)
     list_display = ('progressivo','apparecchio', 'utente', 'data_ritiro', 'ritirato_da')
     raw_id_fields = ('apparecchio','utente')
+    readonly_fields = ('progressivo',)
+    fieldsets = ((
+                    None,{
+                         'fields':('progressivo','data_ritiro','ritirato_da',
+                                   'utente','apparecchio','seriale','accessori_corredo','difetto_dichiarato',
+                                   'garanzia'),
+                         }),(
+                     'Garanzia',{
+                         'fields':('data_acquisto','tipo_prova_acquisto','acquisizione_garanzia'),
+                         }),(
+                     'Fuori garanzia',{
+                         'fields':('acconto','scontrino_acconto','preventivo_ok','importo_preventivo'),
+                         }),(
+                     'Informazioni riconsegna',{
+                         'fields':('riconsegnato_da','data_riconsegna','difetto_riscontrato','costo_riparazione','note'),
+                         }),
+                 )
     
 class SchedaRitiroInline(ReadonlyTabularInline):    
     model=SchedaRitiro
